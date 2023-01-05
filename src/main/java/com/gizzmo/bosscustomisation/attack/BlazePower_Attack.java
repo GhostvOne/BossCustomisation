@@ -8,7 +8,6 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gizzmo.bosscustomisation.BossCustomisation;
@@ -16,28 +15,26 @@ import com.gizzmo.bosscustomisation.BossCustomisation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Attack_BlazePower implements Listener {
-    private static final int ATTACK_COOLDOWN_SECONDS = 15;
-    private static final int RESTORE_COOLDOWN_SECONDS = 5;
+public class BlazePower_Attack extends Attack {
+    private static final int restoreCooldown = 5;
+
+    private static final int widthChangeBlock = 5;
+    private static final int lengthChangeBlock = 5;
     
-    private static final int RADIUS_ATTACK = 5;
-    private static final int DAMAGE_ATTACK = 0;
-    
-    private static final int WIDTH_CHANGE_BLOCK = 5;
-    private static final int LENGTH_CHANGE_BLOCK = 5;
-    
-    private static final Material BLOCK_CHANGE_MATERIAL = Material.BLACK_WOOL;
-    private static final Material RESTORE_BLOCK_MATERIAL = Material.BEDROCK;
+    private static final Material materialChangeBlock = Material.BLACK_WOOL;
+    private static final Material materialRestoreBlock = Material.BEDROCK;
    
-   
+    public BlazePower_Attack(int attackCooldown, int attackDamage, int attackRadius) {
+        super(attackCooldown, attackDamage, attackRadius); // L'attaque sera lancée toutes les 15 secondes
+    }
 
     // Pour stocker les bloques de lave temporaires
     private final List<Block> temporaryChangeBlocks = new ArrayList<>();
     private List<Player> playersNearbyDuringAttack = new ArrayList<>();
     
-    public void blazePowerAttack(Creature boss) 
-    {
-        // Programmez l'attaque toutes les 1 minute
+	@Override
+	public void startAttack(Creature boss) {
+		 // Programmez l'attaque toutes les 1 minute
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -48,20 +45,20 @@ public class Attack_BlazePower implements Listener {
                      List<Player> playersInRange = getPlayersNearby(boss);
 
                      // Transformez les bloques en lave
-                     transformBlocksIntoBlocks(boss, playersInRange, WIDTH_CHANGE_BLOCK, LENGTH_CHANGE_BLOCK);
+                     transformBlocksIntoBlocks(boss, playersInRange, widthChangeBlock, lengthChangeBlock);
 
                      // Faites des dégâts aux joueurs devant le Boss
-                     damagePlayers(playersInRange, DAMAGE_ATTACK);
+                     damagePlayers(playersInRange, attackDamage);
 
                      // Retournez à l'état d'origine les bloques après 20 secondes
-                     restoreBlocksAfterDelay(RESTORE_COOLDOWN_SECONDS);
+                     restoreBlocksAfterDelay(restoreCooldown);
                  } else {
                 	 return;
                  }
             }
-        }.runTaskTimer(BossCustomisation.getInstance(), 0, ATTACK_COOLDOWN_SECONDS * 20);
-    }
-
+        }.runTaskTimer(BossCustomisation.getInstance(), 0, attackCooldown * 20);
+	}
+	
     private List<Player> getPlayersNearby(LivingEntity boss) {
         List<Player> players = new ArrayList<>();
         for (Entity nearbyEntity : boss.getNearbyEntities(20, 20, 20)) {
@@ -69,7 +66,7 @@ public class Attack_BlazePower implements Listener {
                 Player player = (Player) nearbyEntity;
                 Bukkit.getServer().getConsoleSender().sendMessage("J'ai trouvée le joueur: " + nearbyEntity.getName() + " à 20 block");
                 
-                if(player.getLocation().distance(boss.getLocation()) < RADIUS_ATTACK) {
+                if(player.getLocation().distance(boss.getLocation()) < attackRadius) {
                     players.add(player);
                     playersNearbyDuringAttack.add(player);
                     Bukkit.getServer().getConsoleSender().sendMessage("J'ai trouvée le joueur proche du boss: " + nearbyEntity.getName());
@@ -98,7 +95,7 @@ public class Attack_BlazePower implements Listener {
 	                    // Ne modifiez que les bloques remplacés par de l'air
 	                    if (block.getType() != Material.AIR) {
 	                    	temporaryChangeBlocks.add(block);
-	                        block.setType(BLOCK_CHANGE_MATERIAL);
+	                        block.setType(materialChangeBlock);
 	                    }
 	                }
 	            }
@@ -117,7 +114,7 @@ public class Attack_BlazePower implements Listener {
             @Override
             public void run() {
                 for (Block block : temporaryChangeBlocks) {
-                    block.setType(RESTORE_BLOCK_MATERIAL);
+                    block.setType(materialRestoreBlock);
                 }
                 temporaryChangeBlocks.clear();
                 playersNearbyDuringAttack.clear();
