@@ -18,18 +18,21 @@ import java.util.List;
 
 public class Attack_BlazePower implements Listener {
     private static final int ATTACK_COOLDOWN_SECONDS = 15;
+    private static final int RESTORE_COOLDOWN_SECONDS = 5;
     
-    private static final int radiusAttack = 5;
-    private static final int damageBrutAttack = 0;
+    private static final int RADIUS_ATTACK = 5;
+    private static final int DAMAGE_ATTACK = 0;
     
-    private static final int widthBlockChange = 5;
-    private static final int lengthBlockChange = 5;
+    private static final int WIDTH_CHANGE_BLOCK = 5;
+    private static final int LENGTH_CHANGE_BLOCK = 5;
     
-    private static final int restoreBlockChange = 5;
+    private static final Material BLOCK_CHANGE_MATERIAL = Material.BLACK_WOOL;
+    private static final Material RESTORE_BLOCK_MATERIAL = Material.BEDROCK;
+   
    
 
     // Pour stocker les bloques de lave temporaires
-    private final List<Block> temporaryLavaBlocks = new ArrayList<>();
+    private final List<Block> temporaryChangeBlocks = new ArrayList<>();
     private List<Player> playersNearbyDuringAttack = new ArrayList<>();
     
     public void blazePowerAttack(Creature boss) 
@@ -42,16 +45,16 @@ public class Attack_BlazePower implements Listener {
             		 Bukkit.getServer().getConsoleSender().sendMessage("Je lance l'attaque !");
             		 
                      // Récupérez tous les joueurs devant le Boss
-                     List<Player> playersInFront = getPlayersNearby(boss);
+                     List<Player> playersInRange = getPlayersNearby(boss);
 
                      // Transformez les bloques en lave
-                     transformBlocksIntoLava(boss, playersInFront, widthBlockChange, lengthBlockChange);
+                     transformBlocksIntoBlocks(boss, playersInRange, WIDTH_CHANGE_BLOCK, LENGTH_CHANGE_BLOCK);
 
                      // Faites des dégâts aux joueurs devant le Boss
-                     damagePlayers(playersInFront, damageBrutAttack);
+                     damagePlayers(playersInRange, DAMAGE_ATTACK);
 
                      // Retournez à l'état d'origine les bloques après 20 secondes
-                     restoreBlocksAfterDelay(restoreBlockChange);
+                     restoreBlocksAfterDelay(RESTORE_COOLDOWN_SECONDS);
                  } else {
                 	 return;
                  }
@@ -66,7 +69,7 @@ public class Attack_BlazePower implements Listener {
                 Player player = (Player) nearbyEntity;
                 Bukkit.getServer().getConsoleSender().sendMessage("J'ai trouvée le joueur: " + nearbyEntity.getName() + " à 20 block");
                 
-                if(player.getLocation().distance(boss.getLocation()) < radiusAttack) {
+                if(player.getLocation().distance(boss.getLocation()) < RADIUS_ATTACK) {
                     players.add(player);
                     playersNearbyDuringAttack.add(player);
                     Bukkit.getServer().getConsoleSender().sendMessage("J'ai trouvée le joueur proche du boss: " + nearbyEntity.getName());
@@ -76,7 +79,7 @@ public class Attack_BlazePower implements Listener {
         return players;
     }
 
-    private void transformBlocksIntoLava(LivingEntity entity, List<Player> players, int width, int height) {
+    private void transformBlocksIntoBlocks(LivingEntity entity, List<Player> players, int width, int height) {
     	for (Player player : players) 
     	{
 	    	Location playerLoc = player.getLocation();
@@ -94,8 +97,8 @@ public class Attack_BlazePower implements Listener {
 	                    Block block = feetBlock.getRelative(x, y, z);
 	                    // Ne modifiez que les bloques remplacés par de l'air
 	                    if (block.getType() != Material.AIR) {
-	                        temporaryLavaBlocks.add(block);
-	                        block.setType(Material.BLACK_WOOL);
+	                    	temporaryChangeBlocks.add(block);
+	                        block.setType(BLOCK_CHANGE_MATERIAL);
 	                    }
 	                }
 	            }
@@ -113,10 +116,10 @@ public class Attack_BlazePower implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Block block : temporaryLavaBlocks) {
-                    block.setType(Material.GLOWSTONE);
+                for (Block block : temporaryChangeBlocks) {
+                    block.setType(RESTORE_BLOCK_MATERIAL);
                 }
-                temporaryLavaBlocks.clear();
+                temporaryChangeBlocks.clear();
                 playersNearbyDuringAttack.clear();
             }
         }.runTaskLater(BossCustomisation.getInstance(), delaySeconds * 20);
