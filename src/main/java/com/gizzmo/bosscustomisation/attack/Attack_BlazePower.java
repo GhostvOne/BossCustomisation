@@ -18,6 +18,15 @@ import java.util.List;
 
 public class Attack_BlazePower implements Listener {
     private static final int ATTACK_COOLDOWN_SECONDS = 15;
+    
+    private static final int radiusAttack = 5;
+    private static final int damageBrutAttack = 0;
+    
+    private static final int widthBlockChange = 5;
+    private static final int lengthBlockChange = 5;
+    
+    private static final int restoreBlockChange = 5;
+   
 
     // Pour stocker les bloques de lave temporaires
     private final List<Block> temporaryLavaBlocks = new ArrayList<>();
@@ -36,13 +45,13 @@ public class Attack_BlazePower implements Listener {
                      List<Player> playersInFront = getPlayersNearby(boss);
 
                      // Transformez les bloques en lave
-                     transformBlocksIntoLava(boss, playersInFront, 4, 4);
+                     transformBlocksIntoLava(boss, playersInFront, widthBlockChange, lengthBlockChange);
 
                      // Faites des dégâts aux joueurs devant le Boss
-                     damagePlayers(playersInFront, 0);
+                     damagePlayers(playersInFront, damageBrutAttack);
 
                      // Retournez à l'état d'origine les bloques après 20 secondes
-                     restoreBlocksAfterDelay(5);
+                     restoreBlocksAfterDelay(restoreBlockChange);
                  } else {
                 	 return;
                  }
@@ -55,9 +64,9 @@ public class Attack_BlazePower implements Listener {
         for (Entity nearbyEntity : boss.getNearbyEntities(20, 20, 20)) {
             if (nearbyEntity instanceof Player) {
                 Player player = (Player) nearbyEntity;
-                Bukkit.getServer().getConsoleSender().sendMessage("J'ai trouvée le joueur: " + nearbyEntity.getName() + " à 15 block");
+                Bukkit.getServer().getConsoleSender().sendMessage("J'ai trouvée le joueur: " + nearbyEntity.getName() + " à 20 block");
                 
-                if(player.getLocation().distance(boss.getLocation()) < 10) {
+                if(player.getLocation().distance(boss.getLocation()) < radiusAttack) {
                     players.add(player);
                     playersNearbyDuringAttack.add(player);
                     Bukkit.getServer().getConsoleSender().sendMessage("J'ai trouvée le joueur proche du boss: " + nearbyEntity.getName());
@@ -67,24 +76,33 @@ public class Attack_BlazePower implements Listener {
         return players;
     }
 
-    private void transformBlocksIntoLava(LivingEntity entity, List<Player> players, int width, int length) {
-        for (Player player : players) {
-            Location loc = player.getLocation();
-            for (int x = -width; x <= width; x++) {
-                for (int z = -length; z <= length; z++) {
-                    // Obtenez le bloque sous le joueur
-                    Block block = loc.add(x, -1, z).getBlock();
-
-                    // Vérifiez que le bloque n'est pas de l'air
-                    if (block.getType() != Material.AIR) {
-                        temporaryLavaBlocks.add(block);
-                        block.setType(Material.MAGMA_BLOCK);
-                    }
-                }
-            }
+    private void transformBlocksIntoLava(LivingEntity entity, List<Player> players, int width, int height) {
+    	for (Player player : players) 
+    	{
+	    	Location playerLoc = player.getLocation();
+	    	Block feetBlock = playerLoc.getBlock();
+	    	// Transformez les bloques en lave en forme d'exagone
+	        for (int x = -width; x <= width; x++) {
+	            for (int z = -width; z <= width; z++) {
+	                // Ne modifiez pas les bloques en dehors de l'exagone
+	                if (Math.abs(x) + Math.abs(z) > width) {
+	                    continue;
+	                }
+	
+	                // Modifiez les bloques de l'exagone
+	                for (int y = -height; y <= height; y++) {
+	                    Block block = feetBlock.getRelative(x, y, z);
+	                    // Ne modifiez que les bloques remplacés par de l'air
+	                    if (block.getType() != Material.AIR) {
+	                        temporaryLavaBlocks.add(block);
+	                        block.setType(Material.BLACK_WOOL);
+	                    }
+	                }
+	            }
+	        }
         }
     }
-
+    
     private void damagePlayers(List<Player> players, int damage) {
         for (Player player : players) {
             player.damage(damage);
