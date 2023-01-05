@@ -1,95 +1,72 @@
 package com.gizzmo.bosscustomisation.boss;
 
+import java.util.List;
+
 import org.bukkit.Location;
-import org.bukkit.entity.Creature;
+import org.bukkit.entity.EntityType;
+
+import com.gizzmo.bosscustomisation.attack.Attack;
 
 public class Boss
 {
-	private String NAME;
-	
-	private Double MAX_ALIVE;
+    private String name;
+    private double maxHealth;
+    private EntityType type;
+    private Location spawnLocation;
+    private boolean isAlive;
+    
+    private List<Attack> attacks;
 
-	private Creature TYPE;
-		
-	private Location SPAWN;
-	
-	private boolean STILL_ALIVE = false;
-	
-	public Boss(String NAME_, Double MAX_ALIVE_, Creature TYPE_, Location SPAWN_) {
-		setNAME(NAME_);
-		setMaxALIVE(MAX_ALIVE_);
-		setTYPE(TYPE_);
-		setSPAWN(SPAWN_);
-		setSTILL_ALIVE(true);
-	}
+    public Boss(String name, int maxHealth, EntityType entityType, Location spawnLocation, List<Attack> attacks) {
+        this.name = name;
+        this.maxHealth = maxHealth;
+        this.type = entityType;
+        this.spawnLocation = spawnLocation;
+        this.isAlive = true;
+        this.attacks = attacks;
+    }
 
-	/**
-	 * @return The NAME
-	 */
-	public String getNAME() {
-		return NAME;
-	}
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name_) {
+    	this.name = name_;
+    }
 
-	/**
-	 * @param NEW_NAME The NAME to set
-	 */
-	public void setNAME(String NEW_NAME) {
-		NAME = NEW_NAME;
-	}
+    public double getMaxHealth() {
+        return maxHealth;
+    }
+    
+    public void setMaxHealth(double maxHealth) {
+        this.maxHealth = maxHealth;
+    }
 
-	/**
-	 * @return The MAX_ALIVE
-	 */
-	public Double getMaxALIVE() {
-		return MAX_ALIVE;
-	}
+    public EntityType getType() {
+        return type;
+    }
 
-	/**
-	 * @param NEW_MAX_ALIVE The MAX_ALIVE to set
-	 */
-	public void setMaxALIVE(Double NEW_MAX_ALIVE) {
-		MAX_ALIVE = NEW_MAX_ALIVE;
-	}
+    public Location getSpawnLocation() {
+        return spawnLocation;
+    }
+    
+    public void setSpawnLocation(Location spawnLocation) {
+        this.spawnLocation = spawnLocation;
+    }
 
-	/**
-	 * @return The TYPE
-	 */
-	public Creature getTYPE() {
-		return TYPE;
-	}
+    public boolean isAlive() {
+        return isAlive;
+    }
 
-	/**
-	 * @param NEW_TYPE The TYPE to set
-	 */
-	private void setTYPE(Creature NEW_TYPE) {
-		TYPE = NEW_TYPE;
-	}
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+    
+    public List<Attack> getAttacks() {
+        return attacks;
+    }
 
-	/**
-	 * @return The LOCATION
-	 */
-	public Location getSPAWN() {
-		return SPAWN;
-	}
-
-	/**
-	 * @param NEW_SPAWN The LOCATION to set
-	 */
-	public void setSPAWN(Location NEW_SPAWN) {
-		SPAWN = NEW_SPAWN;
-	}
-
-	/**
-	 * @return The STILL_ALIVE
-	 */
-	public boolean isSTILL_ALIVE() {
-		return STILL_ALIVE;
-	}
-
-	/**
-	 * @param STILL_ALIVE_ The BOOLEAN to set
-	 */
-	public void setSTILL_ALIVE(boolean STILL_ALIVE_) {
-		STILL_ALIVE = STILL_ALIVE_;
-	}
+    public void setAttacks(List<Attack> attacks) {
+        this.attacks = attacks;
+    }
 }
