@@ -13,11 +13,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gizzmo.bosscustomisation.attack.Attack_BlazePower;
+import com.gizzmo.bosscustomisation.attack.BlazePower_Attack;
 
 public class Spawn_Boss implements Listener 
 {
-	Attack_BlazePower attack = new Attack_BlazePower();
+	BlazePower_Attack attack = new BlazePower_Attack();
 	
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) 
