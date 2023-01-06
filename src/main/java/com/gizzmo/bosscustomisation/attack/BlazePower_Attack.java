@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -33,33 +32,37 @@ public class BlazePower_Attack extends Attack {
     private List<Player> playersNearbyDuringAttack = new ArrayList<>();
     
 	@Override
-	public void startAttack(Creature boss) {
+	public void startAttack(Entity entity) {
 		 // Programmez l'attaque toutes les 1 minute
         new BukkitRunnable() {
             @Override
             public void run() {
-            	 if (boss.getTarget() != null) {
-            		 Bukkit.getServer().getConsoleSender().sendMessage("Je lance l'attaque !");
-            		 
-                     // Récupérez tous les joueurs devant le Boss
-                     List<Player> playersInRange = getPlayersNearby(boss);
+            	if(entity instanceof Creature) {
+            		Creature boss = (Creature) entity;
+            		
+            		 if (boss.getTarget() != null) {
+                		 Bukkit.getServer().getConsoleSender().sendMessage("Je lance l'attaque !");
+                		 
+                         // Récupérez tous les joueurs devant le Boss
+                         List<Player> playersInRange = getPlayersNearby(boss);
 
-                     // Transformez les bloques en lave
-                     transformBlocksIntoBlocks(boss, playersInRange, widthChangeBlock, lengthChangeBlock);
+                         // Transformez les bloques en lave
+                         transformBlocksIntoBlocks(boss, playersInRange, widthChangeBlock, lengthChangeBlock);
 
-                     // Faites des dégâts aux joueurs devant le Boss
-                     damagePlayers(playersInRange, attackDamage);
+                         // Faites des dégâts aux joueurs devant le Boss
+                         damagePlayers(playersInRange, attackDamage);
 
-                     // Retournez à l'état d'origine les bloques après 20 secondes
-                     restoreBlocksAfterDelay(restoreCooldown);
-                 } else {
-                	 return;
-                 }
+                         // Retournez à l'état d'origine les bloques après 20 secondes
+                         restoreBlocksAfterDelay(restoreCooldown);
+                     } else {
+                    	 return;
+                     }
+            	}
             }
         }.runTaskTimer(BossCustomisation.getInstance(), 0, attackCooldown * 20);
 	}
 	
-    private List<Player> getPlayersNearby(LivingEntity boss) {
+    private List<Player> getPlayersNearby(Creature boss) {
         List<Player> players = new ArrayList<>();
         for (Entity nearbyEntity : boss.getNearbyEntities(20, 20, 20)) {
             if (nearbyEntity instanceof Player) {
@@ -76,7 +79,7 @@ public class BlazePower_Attack extends Attack {
         return players;
     }
 
-    private void transformBlocksIntoBlocks(LivingEntity entity, List<Player> players, int width, int height) {
+    private void transformBlocksIntoBlocks(Creature entity, List<Player> players, int width, int height) {
     	for (Player player : players) 
     	{
 	    	Location playerLoc = player.getLocation();
