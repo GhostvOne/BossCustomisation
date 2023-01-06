@@ -121,4 +121,16 @@ public class Boss
             allBosses.add(this);
         }
     }
+    
+    public void deSpawn() {
+    	isAlive = false;
+    	
+		for(Attack attack : attacks) {
+			if(attack != null) {
+				attack.stopAttack();
+			}
+		}
+		
+		allBosses.remove(this);
+    }
 }
