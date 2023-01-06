@@ -1,24 +1,23 @@
 package com.gizzmo.bosscustomisation.event;
 
-import org.bukkit.Location;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.gizzmo.bosscustomisation.attack.Attack;
 import com.gizzmo.bosscustomisation.attack.BlazePower_Attack;
+import com.gizzmo.bosscustomisation.boss.Boss;
 
 public class Spawn_Boss implements Listener 
 {
-	BlazePower_Attack attack = new BlazePower_Attack();
-	
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) 
     {
@@ -26,22 +25,32 @@ public class Spawn_Boss implements Listener
         if (item == null) return;
         if (!item.getType().equals(Material.DIAMOND_AXE)) return;
 
-        Location location = event.getPlayer().getLocation();
-        LivingEntity boss = (LivingEntity) location.getWorld().spawnEntity(location, EntityType.ZOMBIE);
-        boss.setCustomName("Boss Zombie");
-        boss.setHealth(20.0);
+        List<Attack> attacks = new ArrayList<>();
+        attacks.add(new BlazePower_Attack(15, 0, 10));
 
-        Zombie zombie = (Zombie) boss;
-        zombie.setCanPickupItems(false);
-
+        Boss zombieBoss = new Boss("Boss Zombie", 20.0, EntityType.ZOMBIE, event.getPlayer().getLocation(), attacks);
+        zombieBoss.spawn();
     }
-    
-    @EventHandler
+
+	@EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Entity entity = event.getEntity();
-        if (entity instanceof Creature && entity.getName().equals("Boss Zombie")) {
-            Creature boss = (Creature) entity;
-            attack.blazePowerAttack(boss);
+        if (entity instanceof Creature) {
+        	String nameEntity = entity.getName();
+
+        	Boss boss = Boss.getBoss(nameEntity);
+
+        	if(boss != null) {
+        		if(!boss.isAFight()) {
+        			for(Attack attack : boss.getAttacks()) {
+                		if (attack != null) {
+                    		attack.startAttack(entity);
+                		}
+                	}
+                	
+                	boss.setAfight(true);
+        		}
+        	}
         }
     }
 }
