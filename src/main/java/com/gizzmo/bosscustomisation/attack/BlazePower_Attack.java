@@ -8,6 +8,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import com.gizzmo.bosscustomisation.BossCustomisation;
 
@@ -23,6 +24,8 @@ public class BlazePower_Attack extends Attack {
     private static final Material materialChangeBlock = Material.BLACK_WOOL;
     private static final Material materialRestoreBlock = Material.BEDROCK;
    
+    private BukkitTask attackScheduler;
+    
     public BlazePower_Attack(int attackCooldown, int attackDamage, int attackRadius) {
         super(attackCooldown, attackDamage, attackRadius); // L'attaque sera lancée toutes les 15 secondes
     }
@@ -34,7 +37,7 @@ public class BlazePower_Attack extends Attack {
 	@Override
 	public void startAttack(Entity entity) {
 		 // Programmez l'attaque toutes les 1 minute
-        new BukkitRunnable() {
+		attackScheduler = new BukkitRunnable() {
             @Override
             public void run() {
             	if(entity instanceof Creature) {
@@ -60,6 +63,12 @@ public class BlazePower_Attack extends Attack {
             	}
             }
         }.runTaskTimer(BossCustomisation.getInstance(), 0, attackCooldown * 20);
+	}
+	
+	@Override
+	public void stopAttack() {
+		attackScheduler.cancel();
+		Bukkit.getServer().getConsoleSender().sendMessage("[Boss Customisation] J'arrète l'attaque BlazePower");
 	}
 	
     private List<Player> getPlayersNearby(Creature boss) {
