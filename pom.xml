@@ -31,7 +31,8 @@
 		 <dependency>
 		   <groupId>fr.maliimaloo.omegacore.api</groupId> <!-- Remplacez par votre nom de groupe -->
 		   <artifactId>OmegaAPI</artifactId> <!-- Remplacez par le nom de votre plugin API -->
-		   <version>0.0.1-SNAPSHOT</version> <!-- Remplacez par la version de votre plugin API -->
+		   <version>0.0.1</version> <!-- Remplacez par la version de votre plugin API -->
+			 <scope>provided</scope>
 		 </dependency>
 	   </dependencies>
 	  <build>
