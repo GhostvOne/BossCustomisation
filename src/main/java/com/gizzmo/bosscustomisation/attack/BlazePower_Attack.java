@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.gizzmo.bosscustomisation.BossCustomisation;
+import fr.maliimaloo.bosscustomisation.BossCustomisation;
 
 import java.util.ArrayList;
 import java.util.List;

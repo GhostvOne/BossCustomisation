@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>StoryBoss</groupId>
-  <artifactId>StoryBoss</artifactId>
+  <groupId>fr.maliimaloo.bosscustomisation</groupId>
+  <artifactId>BossCustomisation</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 	<properties>
 	    <maven.compiler.source>1.8</maven.compiler.source>
@@ -26,9 +26,16 @@
 	      <version>1.19.3-R0.1-SNAPSHOT</version>
 	      <scope>provided</scope>
 	    </dependency>
+	    
+	    <!-- OmegaAPI -->
+		 <dependency>
+		   <groupId>fr.maliimaloo.omegacore.api</groupId> <!-- Remplacez par votre nom de groupe -->
+		   <artifactId>OmegaAPI</artifactId> <!-- Remplacez par le nom de votre plugin API -->
+		   <version>0.0.1-SNAPSHOT</version> <!-- Remplacez par la version de votre plugin API -->
+		 </dependency>
 	   </dependencies>
 	  <build>
-	    <finalName>StoryBoss</finalName>
+	    <finalName>BossCustomisation</finalName>
 	    <defaultGoal>clean install</defaultGoal>
 	    <plugins>
 	      <plugin>

@@ -1,0 +1,12 @@
+name: BossCustomisation
+main: fr.maliimaloo.bosscustomisation.BossCustomisation
+version: 1.0
+author: gizzmo
+api-version: 1.13
+
+soft-depend: [OmegaAPI]
+
+commands:
+  coller:
+    description: Colle un schematic à l'emplacement du joueur
+    usage: /coller <schematic_name>
