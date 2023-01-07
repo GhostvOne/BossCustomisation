@@ -1,4 +1,4 @@
-package com.gizzmo.bosscustomisation.attack;
+package fr.maliimaloo.bosscustomisation.attack;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

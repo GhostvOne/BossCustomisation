@@ -1,4 +1,4 @@
-package com.gizzmo.bosscustomisation.event;
+package fr.maliimaloo.bosscustomisation.event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,9 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gizzmo.bosscustomisation.attack.Attack;
-import com.gizzmo.bosscustomisation.attack.BlazePower_Attack;
-import com.gizzmo.bosscustomisation.boss.Boss;
+import fr.maliimaloo.bosscustomisation.attack.Attack;
+import fr.maliimaloo.bosscustomisation.attack.BlazePower_Attack;
+import fr.maliimaloo.bosscustomisation.boss.Boss;
 
 public class Spawn_Boss implements Listener 
 {

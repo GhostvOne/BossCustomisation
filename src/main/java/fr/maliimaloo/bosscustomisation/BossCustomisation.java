@@ -4,8 +4,7 @@ import java.io.File;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.gizzmo.bosscustomisation.event.Spawn_Boss;
-
+import fr.maliimaloo.bosscustomisation.event.Spawn_Boss;
 import fr.maliimaloo.omegacore.api.OmegaAPI;
 import fr.maliimaloo.omegacore.api.fichier.FichierAPI;
 

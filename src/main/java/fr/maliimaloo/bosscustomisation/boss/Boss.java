@@ -1,4 +1,4 @@
-package com.gizzmo.bosscustomisation.boss;
+package fr.maliimaloo.bosscustomisation.boss;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
-import com.gizzmo.bosscustomisation.attack.Attack;
+import fr.maliimaloo.bosscustomisation.attack.Attack;
 
 public class Boss
 {
