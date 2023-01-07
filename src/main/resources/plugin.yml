@@ -1,10 +1,10 @@
 name: BossCustomisation
 main: fr.maliimaloo.bosscustomisation.BossCustomisation
-version: 1.0
+version: 0.0.1
 author: gizzmo
 api-version: 1.13
 
-soft-depend: [OmegaAPI]
+depend: [OmegaAPI]
 
 commands:
   coller:

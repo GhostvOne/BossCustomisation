@@ -13,11 +13,9 @@ import fr.maliimaloo.omegacore.api.schematic.Schematic;
 
 public class PasteCommand implements CommandExecutor {
 	private BossCustomisation plugin;
-	private FichierAPI fichierAPI;
 	
     public PasteCommand(BossCustomisation plugin) {
 		this.plugin = plugin;
-		fichierAPI = OmegaAPI.getInstance().getFichierAPI();
 	}
 
 	@Override
@@ -26,6 +24,8 @@ public class PasteCommand implements CommandExecutor {
             Player player = (Player) sender;
             if (args.length == 1) {
                 String schematicName = args[0];
+                FichierAPI fichierAPI = OmegaAPI.getInstance().getFichierAPI();
+        		
                 // Récupérer le fichier schematic à l'aide de la méthode getFile de votre plugin API Fichier
                 File schematicFile = fichierAPI.getFile(plugin, "Schematic", schematicName, "schem");
                 if (schematicFile != null) {
