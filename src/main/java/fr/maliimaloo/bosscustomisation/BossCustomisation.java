@@ -1,5 +1,6 @@
 package fr.maliimaloo.bosscustomisation;
 
+import fr.maliimaloo.bosscustomisation.event.WorldCommand;
 import fr.maliimaloo.omegacore.api.fichier.FichierAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,11 +19,7 @@ public class BossCustomisation extends JavaPlugin {
 
 		getServer().getPluginManager().registerEvents(new Spawn_Boss(), this);
 		getCommand("coller").setExecutor(new PasteCommand(this));
-
-		if(OmegaAPI.getInstance() == null)
-			System.out.println(" [Boss Customisation] L'instance OMEGAAPI est null");
-		else 
-			System.out.println(" [Boss Customisation] L'instance OMEGAAPI n'est pas null");
+		getCommand("world").setExecutor(new WorldCommand());
 
 		FichierAPI fichierAPI = OmegaAPI.getInstance().getFichierAPI();
 		ArrayList<String> listeFichier = new ArrayList<>();

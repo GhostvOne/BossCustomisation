@@ -10,3 +10,6 @@ commands:
   coller:
     description: Colle un schematic à l'emplacement du joueur
     usage: /coller <schematic_name>
+  world:
+    description: Commande pour gérer les mondes
+    usage: /world create <nom_du_monde> <environement_de_monde> <type_de_monde> | /world delete <nom_du_monde> | /world liste
