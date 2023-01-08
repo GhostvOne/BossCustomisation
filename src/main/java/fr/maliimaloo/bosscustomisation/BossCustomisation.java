@@ -1,6 +1,5 @@
 package fr.maliimaloo.bosscustomisation;
 
-import fr.maliimaloo.bosscustomisation.event.WorldCommand;
 import fr.maliimaloo.omegacore.api.fichier.FichierAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 
