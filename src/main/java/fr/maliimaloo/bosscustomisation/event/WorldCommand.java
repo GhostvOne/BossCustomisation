@@ -41,10 +41,10 @@ public class WorldCommand implements CommandExecutor {
                         worldGeneratorAPI.generateVoidWorld(worldName, sender);
                         break;
                     default:
-                        World.Environment environment = World.Environment.valueOf(action.toUpperCase());
-                        if(environment != null) {
+                        try {
+                            World.Environment environment = World.Environment.valueOf(action.toUpperCase());
                             worldGeneratorAPI.generateWorld(worldName, environment, sender);
-                        } else {
+                        } catch(Exception e) {
                             if(sender != null)
                                 sender.sendMessage("[OmegaAPI] Utilisation de la commande : /world create <void:normal:nther:the_end> <nom_du_monde>");
                             else
